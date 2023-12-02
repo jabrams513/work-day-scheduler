@@ -2,6 +2,27 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 $(function () {
+  // Standard work day length is 8 hours with the last time entry at 4pm
+  let workDayLength = 8;
+  // This section of code creates all of the rows for the scheduler
+  for (let i = 1; i <= workDayLength; i++) {
+    let timeRowEl = $("<div>");
+    timeRowEl.addClass("row time-block");
+    let hourEl = $("<div>");
+    hourEl.addClass("hour col-1");
+    hourEl.text((i + workDayLength) + " o'clock");
+    let textAreaEl = $("<textarea>");
+    textAreaEl.addClass("textarea col-9 description");
+    let saveBtnEl = $("<button>");
+    saveBtnEl.addClass("saveBtn col-1");
+    let saveIconEl = $("<i>");
+    saveIconEl.addClass("far fa-save");
+    $(".container-fluid").append(timeRowEl);
+    timeRowEl.append(hourEl);
+    timeRowEl.append(textAreaEl);
+    timeRowEl.append(saveBtnEl);
+    saveBtnEl.append(saveIconEl);
+  }
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
@@ -20,14 +41,11 @@ $(function () {
   // attribute of each time-block be used to do this?
   //
   // TODO: Add code to display the current date in the header of the page.
-
-function updateCurrentTime() {
-  setInterval(function(){
-    let currentDayEl = dayjs ();
-$('#currentDay').text(currentDayEl.format('dddd' + " " + "MMMM" + " " + "D" + " " + "YYYY" + " @ " + "h:mm:ss A"));
-  }, 1000)
-}
-
-updateCurrentTime();
+  function updateCurrentTime() {
+    setInterval(function () {
+      let currentDayEl = dayjs();
+      $('#currentDay').text("Today is: " + (currentDayEl.format("dddd" + " " + "MMMM" + " " + "D" + " " + "YYYY" + " @ " + "h:mm:ss A")));
+    }, 1000)
+  }
+  updateCurrentTime();
 });
-
