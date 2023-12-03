@@ -6,31 +6,53 @@ $(function () {
   let workDayLength = 8;
   // This section of code creates all of the rows for the scheduler
   for (let i = 1; i <= workDayLength; i++) {
+    var colorKey = "";
+    var rowHour = i + workDayLength;
+    let currentHour = dayjs().hour();
+
+    if (rowHour < currentHour){
+      colorKey = "past"
+    }
+    else if (rowHour === currentHour){
+      colorKey = "present"
+    }
+    else {
+      colorKey = "future"
+    }
+
     var timeRowEl = $("<div>");
     timeRowEl.addClass("row time-block");
     // Created id for each complete row
-    timeRowEl.attr("id", "timeRow" + (i + workDayLength));
+    timeRowEl.attr("id", "timeRow-" + (i + workDayLength));
 
     var hourEl = $("<div>");
     hourEl.addClass("hour col-1");
     hourEl.text((i + workDayLength) + " o'clock");
     // Created id for each hour
-    hourEl.attr("id", "hour" + (i + workDayLength));
+    hourEl.attr("id", "hour-" + (i + workDayLength));
 
     var textAreaEl = $("<textarea>");
-    textAreaEl.addClass("textarea col-9 description");
+    textAreaEl.addClass("textarea col-9 description " + colorKey);
     // Created id for each text area
-    textAreaEl.attr("id", "textarea" + (i + workDayLength));
+    textAreaEl.attr("id", "textarea-" + (i + workDayLength));
+    textAreaEl.val(localStorage.getItem(i + workDayLength));
 
     var saveBtnEl = $("<button>");
     saveBtnEl.addClass("saveBtn col-1");
     // Created id for each save button
-    saveBtnEl.attr("id", "saveBtn" + (i + workDayLength));
+    saveBtnEl.attr("id", "saveBtn-" + (i + workDayLength));
+
+    // SaveBtn event listener and store in local storage
+    saveBtnEl.on("click", function () {
+      var hourKey = $(this).attr("id").split("-").pop();
+      var activity = $(this).siblings(".description").val();
+      localStorage.setItem(hourKey, activity)
+    });
 
     var saveIconEl = $("<i>");
     saveIconEl.addClass("far fa-save");
     // Created id for each save icon
-    saveIconEl.attr("id", "saveIcon" + (i + workDayLength));
+    saveIconEl.attr("id", "saveIcon-" + (i + workDayLength));
 
     $(".container-fluid").append(timeRowEl);
     timeRowEl.append(hourEl);
@@ -46,11 +68,15 @@ $(function () {
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
 
-  function saveTask(event) {
-    event.target.localStorage.setItem("task", textAreaEl);
-  }
+  // function saveTask(event) {
+  //   // event.preventDefault();
+  //   console.log(textAreaEl.val())
+  //   localStorage.setItem("task", JSON.stringify(textAreaEl));
+  // }
 
-  saveBtnEl.on("click", saveTask());
+  // saveBtnEl.on("click", function (){
+  //   console.log(this)
+  // });
 
 
 
@@ -60,38 +86,38 @@ $(function () {
   // past, present, and future classes? How can Day.js be used to get the
   // current hour in 24-hour time?
 
-  function colorTime() {
-    setInterval(function () {
+  // function colorTime() {
+  //   setInterval(function () {
 
-      var milTime = dayjs().format("HH");
-      console.log(milTime)
+  //     var milTime = dayjs().format("HH");
+  //     // console.log(milTime)
 
-      if (milTime > hourEl.val()) {
-        textAreaEl.addClass("past")
-      }
-      else if (milTime == hourEl.val()) {
-        textAreaEl.addClass("present")
+  //     if (milTime > hourEl.val()) {
+  //       textAreaEl.addClass("past")
+  //     }
+  //     else if (milTime == hourEl.val()) {
+  //       textAreaEl.addClass("present")
 
-      } else if (milTime < hourEl.val()) {
+  //     } else if (milTime < hourEl.val()) {
 
-    textAreaEl.addClass("future")
-  }
+  //       textAreaEl.addClass("future")
+  //     }
 
-}, 1000);
-  }
-colorTime();
+  //   }, 1000);
+  // }
+  // colorTime();
 
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
 
-// TODO: Add code to display the current date in the header of the page.
-// This function displays and updates information about the current date and time to the header section
-function updateCurrentTime() {
-  setInterval(function () {
-    let currentDayEl = dayjs();
-    $('#currentDay').text("Today is: " + (currentDayEl.format("dddd" + " " + "MMMM" + " " + "D" + " " + "YYYY" + " @ " + "H:mm:ss")));
-  }, 1000)
-}
-updateCurrentTime();
+  // TODO: Add code to display the current date in the header of the page.
+  // This function displays and updates information about the current date and time to the header section
+  function updateCurrentTime() {
+    setInterval(function () {
+      let currentDayEl = dayjs();
+      $('#currentDay').text("Today is: " + (currentDayEl.format("dddd" + " " + "MMMM" + " " + "D" + " " + "YYYY" + " @ " + "H:mm:ss")));
+    }, 1000)
+  }
+  updateCurrentTime();
 });
