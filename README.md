@@ -46,7 +46,7 @@ THEN the saved events persist
 
 ## Screenshot
 Please refer to the following screenshot as a reference for the web application's appearance and functionality:
-![workday scheduler page](./assets/pic1.png)
+![workday scheduler page](./Assets/pic1.png)
 
 ## Code Sources and Collaborators
 I had the opportunity to collaborate with my peer Mustapha. We checked our work with one another.
