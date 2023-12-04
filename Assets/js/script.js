@@ -31,6 +31,7 @@ $(function () {
     // Created id for each hour
     hourEl.attr("id", "hour-" + (i + workDayLength));
 
+    // Add colorkey and id to the text area
     var textAreaEl = $("<textarea>");
     textAreaEl.addClass("textarea col-9 description " + colorKey);
     // Created id for each text area
